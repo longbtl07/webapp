@@ -6,6 +6,8 @@ import { generateQrDataUrl } from "@/lib/qrcode";
 import DownloadTicketButton from "./DownloadTicketButton";
 import { Calendar, MapPin, CheckCircle2, Clock, ArrowLeft, QrCode } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 
 interface TicketPageProps {
   params: Promise<{ ticketCode: string }>;

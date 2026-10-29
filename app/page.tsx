@@ -14,6 +14,8 @@ import {
   Users,
 } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const events = await prisma.event.findMany({
     orderBy: { startDate: "asc" },

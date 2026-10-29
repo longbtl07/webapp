@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import RegisterForm from "./RegisterForm";
 import { Calendar, MapPin, Users, Sparkles, Clock } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 
 interface EventPageProps {
   params: Promise<{ slug: string }>;
