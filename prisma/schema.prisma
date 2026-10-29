@@ -1,0 +1,49 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?
+  location    String
+  startDate   DateTime
+  endDate     DateTime?
+  capacity    Int?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tickets     Ticket[]
+}
+
+model Ticket {
+  id          String    @id @default(cuid())
+  ticketCode  String    @unique
+  eventId     String
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  fullName    String
+  email       String
+  phoneNumber String
+  employeeId  String
+  department  String
+
+  status      String    @default("REGISTERED") // REGISTERED | CHECKED_IN | CANCELLED
+  checkedInAt DateTime?
+  checkedInBy String?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([eventId, email])
+  @@unique([eventId, employeeId])
+  @@index([eventId])
+  @@index([ticketCode])
+}
