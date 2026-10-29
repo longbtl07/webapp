@@ -287,6 +287,14 @@ export default function AdminDashboardPage() {
               <span>Quản Lý Sự Kiện</span>
             </Link>
 
+            {/* Form Mời khách trực tiếp */}
+            <Link
+              href="/admin/invite"
+              className="py-2 px-3 rounded-xl bg-[#2cb696]/15 hover:bg-[#2cb696]/25 text-[#2cb696] text-xs font-semibold border border-[#2cb696]/30 transition-all flex items-center gap-1.5"
+            >
+              <span>+ Mời Khách & Cấp Vé</span>
+            </Link>
+
             {/* Cài đặt Email */}
             <Link
               href="/admin/settings/email"
