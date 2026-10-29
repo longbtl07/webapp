@@ -56,13 +56,13 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 1.4 Viết script `prisma/seed.ts` để nạp sẵn 1 sự kiện công ty mẫu hoàn chỉnh phục vụ chạy thử GĐ1.
   - [x] 1.5 Cấu hình file `.env.example` và biến môi trường (`ADMIN_PIN`, `STAFF_PIN`, `DATABASE_URL`).
 
-- [ ] 2.0 Guest Registration & QR Ticket Generation Module (GĐ1)
-  - [ ] 2.1 Xây dựng trang thông tin sự kiện và Form đăng ký (`app/events/[slug]/page.tsx`).
-  - [ ] 2.2 Xây dựng Form đăng ký phía client với các trường bắt buộc: Họ tên, Email, Số điện thoại, Mã nhân viên, Phòng ban kèm validation.
-  - [ ] 2.3 Xây dựng API Route đăng ký (`POST /api/register`): kiểm tra trùng lặp email hoặc mã nhân viên trong sự kiện, tạo vé mới với mã định danh duy nhất (UUID/NanoID).
-  - [ ] 2.4 Xây dựng module sinh mã QR (`lib/qrcode.ts`) để mã hóa thông tin mã vé.
-  - [ ] 2.5 Xây dựng trang hiển thị vé điện tử (`app/tickets/[ticketCode]/page.tsx`): hiển thị thông tin sự kiện, thông tin khách mời và mã QR độ tương phản cao.
-  - [ ] 2.6 Tích hợp tính năng "Tải ảnh vé QR" về điện thoại để khách xuất trình offline tại sự kiện.
+- [x] 2.0 Guest Registration & QR Ticket Generation Module (GĐ1)
+  - [x] 2.1 Xây dựng trang thông tin sự kiện và Form đăng ký (`app/events/[slug]/page.tsx`).
+  - [x] 2.2 Xây dựng Form đăng ký phía client với các trường bắt buộc: Họ tên, Email, Số điện thoại, Mã nhân viên, Phòng ban kèm validation.
+  - [x] 2.3 Xây dựng API Route đăng ký (`POST /api/register`): kiểm tra trùng lặp email hoặc mã nhân viên trong sự kiện, tạo vé mới với mã định danh duy nhất (UUID/NanoID).
+  - [x] 2.4 Xây dựng module sinh mã QR (`lib/qrcode.ts`) để mã hóa thông tin mã vé.
+  - [x] 2.5 Xây dựng trang hiển thị vé điện tử (`app/tickets/[ticketCode]/page.tsx`): hiển thị thông tin sự kiện, thông tin khách mời và mã QR độ tương phản cao.
+  - [x] 2.6 Tích hợp tính năng "Tải ảnh vé QR" về điện thoại để khách xuất trình offline tại sự kiện.
 
 - [ ] 3.0 Web-based Check-in Scanner Module (GĐ1)
   - [ ] 3.1 Xây dựng màn hình xác thực mã PIN truy cập cho nhân viên đón khách (`app/checkin/page.tsx`).
