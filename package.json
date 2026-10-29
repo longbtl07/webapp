@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma db push --accept-data-loss && tsx prisma/seed.ts && cp prisma/dev.db ./dev.db && next build",
+    "build": "DATABASE_URL=\"file:/tmp/dev.db\" prisma db push --accept-data-loss && DATABASE_URL=\"file:/tmp/dev.db\" tsx prisma/seed.ts && next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "prisma generate"
+    "postinstall": "DATABASE_URL=\"file:/tmp/dev.db\" prisma generate"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

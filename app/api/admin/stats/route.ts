@@ -132,10 +132,10 @@ export async function GET(req: Request) {
         })),
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Lỗi khi lấy thống kê admin:", error);
     return NextResponse.json(
-      { success: false, message: "Lỗi máy chủ khi lấy dữ liệu thống kê." },
+      { success: false, message: error?.message || "Lỗi máy chủ khi lấy dữ liệu thống kê." },
       { status: 500 }
     );
   }
