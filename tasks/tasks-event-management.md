@@ -47,6 +47,8 @@ Update the file after completing each sub-task, not just after completing an ent
 
 ## Tasks
 
+- [x] 0.0 Create feature branch
+  - [x] 0.1 Create and checkout a new branch for this feature (`feature/event-checkin-platform`)
 - [x] 1.0 Project Setup & Database Architecture (Next.js, Tailwind CSS, Prisma ORM & Database Schema)
   - [x] 1.1 Khởi tạo dự án Next.js (App Router) với TypeScript, Tailwind CSS, và các icon cần thiết (`lucide-react`).
   - [x] 1.2 Cấu hình Prisma ORM với cơ sở dữ liệu SQLite (hỗ trợ chuyển đổi sang PostgreSQL khi lên mạng).
