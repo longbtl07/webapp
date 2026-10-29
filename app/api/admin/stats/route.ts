@@ -8,7 +8,7 @@ export async function GET(req: Request) {
     const eventSlug = searchParams.get("slug");
 
     // 1. Xác thực Admin PIN
-    const expectedPin = process.env.ADMIN_PIN || "123456";
+    const expectedPin = (process.env.ADMIN_PIN || "123456").trim();
     if (!pin || pin.trim() !== expectedPin) {
       return NextResponse.json(
         { success: false, message: "Mã PIN Quản trị không chính xác." },
@@ -149,7 +149,7 @@ export async function PATCH(req: Request) {
     const body = await req.json();
     const { ticketId, status, pin, operatorName } = body;
 
-    const expectedPin = process.env.ADMIN_PIN || "123456";
+    const expectedPin = (process.env.ADMIN_PIN || "123456").trim();
     if (!pin || pin.trim() !== expectedPin) {
       return NextResponse.json(
         { success: false, message: "Mã PIN không chính xác." },

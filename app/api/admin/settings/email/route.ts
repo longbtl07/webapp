@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getEmailConfig, saveEmailConfig, testEmailConnection, EmailSettingsConfig } from "@/lib/email";
 
 function verifyAdminPin(pin?: string | null): boolean {
-  const expected = process.env.ADMIN_PIN || "123456";
+  const expected = (process.env.ADMIN_PIN || "123456").trim();
   return !!pin && pin.trim() === expected;
 }
 

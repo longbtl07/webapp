@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       pin,
     } = body;
 
-    const expectedPin = process.env.ADMIN_PIN || "123456";
+    const expectedPin = (process.env.ADMIN_PIN || "123456").trim();
     if (pin && pin.trim() !== expectedPin) {
       return NextResponse.json(
         { success: false, message: "Mã PIN Quản trị không chính xác." },

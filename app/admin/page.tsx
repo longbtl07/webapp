@@ -75,7 +75,9 @@ export default function AdminDashboardPage() {
           if (res.status === 401) {
             setIsAuthenticated(false);
             sessionStorage.removeItem("event_admin_pin");
-            setPinError("Mã PIN không đúng hoặc đã hết hạn.");
+            setPinError("Mã PIN Quản trị không chính xác (Mặc định: 123456).");
+          } else {
+            setPinError(resJson.message || "Lỗi máy chủ kết nối cơ sở dữ liệu.");
           }
           return false;
         }
@@ -134,7 +136,7 @@ export default function AdminDashboardPage() {
       sessionStorage.setItem("event_admin_pin", pin.trim());
       setIsAuthenticated(true);
     } else {
-      setPinError("Mã PIN Quản trị không chính xác!");
+      setPinError((prev) => prev || "Mã PIN Quản trị không chính xác!");
     }
     setIsLoading(false);
   };

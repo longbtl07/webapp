@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const { code, staffPin, operatorName, targetEventId } = body as CheckinRequestBody & { targetEventId?: string };
 
     // 1. Kiểm tra mã PIN nhân viên
-    const expectedPin = process.env.STAFF_PIN || "8888";
+    const expectedPin = (process.env.STAFF_PIN || "8888").trim();
     if (!staffPin || staffPin.trim() !== expectedPin) {
       return NextResponse.json<CheckinResponse>(
         {

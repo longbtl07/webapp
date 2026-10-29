@@ -4,7 +4,7 @@ import { generateQrDataUrl } from "@/lib/qrcode";
 import { sendTicketEmail } from "@/lib/email";
 
 function verifyAdminPin(pin?: string | null): boolean {
-  const expected = process.env.ADMIN_PIN || "123456";
+  const expected = (process.env.ADMIN_PIN || "123456").trim();
   return !!pin && pin.trim() === expected;
 }
 
