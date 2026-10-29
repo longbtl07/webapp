@@ -16,19 +16,42 @@ export async function GET(req: Request) {
       );
     }
 
-    // 2. Lấy sự kiện (nếu không truyền slug, lấy sự kiện hoạt động gần nhất)
+    // Lấy danh sách tất cả sự kiện cho dropdown
+    const allEvents = await prisma.event.findMany({
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        isActive: true,
+        startDate: true,
+      },
+    });
+
+    // 2. Lấy sự kiện đang xem
     const event = eventSlug
       ? await prisma.event.findUnique({ where: { slug: eventSlug } })
-      : await prisma.event.findFirst({
-          where: { isActive: true },
-          orderBy: { createdAt: "desc" },
-        });
+      : allEvents.length > 0
+      ? await prisma.event.findUnique({ where: { id: allEvents[0].id } })
+      : null;
 
     if (!event) {
-      return NextResponse.json(
-        { success: false, message: "Không tìm thấy sự kiện nào trong hệ thống." },
-        { status: 404 }
-      );
+      return NextResponse.json({
+        success: true,
+        data: {
+          allEvents: [],
+          event: null,
+          stats: {
+            totalRegistrations: 0,
+            checkedInCount: 0,
+            pendingCount: 0,
+            attendanceRate: 0,
+            capacity: null,
+          },
+          departmentStats: [],
+          tickets: [],
+        },
+      });
     }
 
     // 3. Lấy tất cả vé của sự kiện
@@ -70,6 +93,13 @@ export async function GET(req: Request) {
     return NextResponse.json({
       success: true,
       data: {
+        allEvents: allEvents.map((e) => ({
+          id: e.id,
+          title: e.title,
+          slug: e.slug,
+          isActive: e.isActive,
+          startDate: e.startDate.toISOString(),
+        })),
         event: {
           id: event.id,
           title: event.title,

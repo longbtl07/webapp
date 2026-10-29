@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #090d16;
+  --foreground: #f8fafc;
+  --intergreat-teal: #2cb696;
+  --intergreat-teal-hover: #23977c;
+  --intergreat-teal-soft: rgba(44, 182, 150, 0.12);
+  --intergreat-charcoal: #334155;
 }
 
 @theme inline {
@@ -12,15 +16,31 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background: #090d16;
+  color: #f8fafc;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* InterGreat Custom Utilities */
+.btn-intergreat {
+  background-color: #2cb696;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+.btn-intergreat:hover {
+  background-color: #23977c;
+}
+
+.text-intergreat {
+  color: #2cb696;
+}
+
+.bg-intergreat-soft {
+  background-color: rgba(44, 182, 150, 0.12);
+}
+
+.border-intergreat {
+  border-color: rgba(44, 182, 150, 0.3);
 }

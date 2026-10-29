@@ -148,7 +148,7 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
             onChange={handleChange}
             placeholder="Ví dụ: Nguyễn Văn An"
             required
-            className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm"
+            className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#2cb696] focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm"
           />
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
             onChange={handleChange}
             placeholder="an.nv@company.com"
             required
-            className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm"
+            className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#2cb696] focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm"
           />
         </div>
       </div>
@@ -189,7 +189,7 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
               placeholder="0912345678"
               maxLength={12}
               required
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm font-mono"
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#2cb696] focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm font-mono"
             />
           </div>
         </div>
@@ -208,7 +208,7 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
               onChange={handleChange}
               placeholder="EMP001"
               required
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-400 text-sm uppercase shadow-sm"
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#2cb696] focus:border-transparent transition-all placeholder:text-slate-400 text-sm uppercase shadow-sm"
             />
           </div>
         </div>
@@ -226,7 +226,7 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
             value={formData.department}
             onChange={handleChange}
             required
-            className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm shadow-sm appearance-none"
+            className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#2cb696] focus:border-transparent transition-all text-sm shadow-sm appearance-none"
           >
             <option value="">-- Chọn phòng ban của bạn --</option>
             {DEPARTMENTS.map((dept) => (
@@ -242,12 +242,12 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full mt-4 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+        className="w-full mt-4 py-3.5 px-4 rounded-xl bg-[#2cb696] hover:bg-[#23977c] text-white font-semibold text-sm shadow-md shadow-[#2cb696]/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
       >
         {isLoading ? (
           <>
             <Loader2 className="w-5 h-5 animate-spin" />
-            <span>Đang tạo vé của bạn...</span>
+            <span>Đang tạo vé & gửi email...</span>
           </>
         ) : (
           <span>Đăng ký & Nhận vé QR ngay</span>

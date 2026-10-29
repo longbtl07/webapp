@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Html5Qrcode, Html5QrcodeSupportedFormats, Html5QrcodeScannerState } from "html5-qrcode";
-import { Camera, SwitchCamera, AlertTriangle, Play, Square, Upload, Image as ImageIcon } from "lucide-react";
+import { Camera, SwitchCamera, AlertTriangle, Play, Square, Image as ImageIcon } from "lucide-react";
 
 interface QrScannerProps {
   onScanSuccess: (decodedText: string) => void;
@@ -49,7 +49,6 @@ export default function QrScanner({ onScanSuccess, isProcessing }: QrScannerProp
 
     return () => {
       isMountedRef.current = false;
-      // Dọn dẹp an toàn khi component unmount
       safeStopScanner();
     };
   }, []);
@@ -65,7 +64,6 @@ export default function QrScanner({ onScanSuccess, isProcessing }: QrScannerProp
       }
       await scanner.clear();
     } catch (err) {
-      // Bắt lỗi nuốt exception chuyển trạng thái của html5-qrcode
       console.warn("Safe stop scanner warning:", err);
     } finally {
       if (isMountedRef.current) {
@@ -106,25 +104,24 @@ export default function QrScanner({ onScanSuccess, isProcessing }: QrScannerProp
       });
       scannerRef.current = scanner;
 
+      // Đặt camera active ngay để DOM container hiển thị sẵn kích thước
+      setIsCameraActive(true);
+
       await scanner.start(
         cameraId,
         {
-          fps: 10,
+          fps: 15,
           qrbox: { width: 220, height: 220 },
-          aspectRatio: 1.0,
         },
         (decodedText) => {
           handleScan(decodedText);
         },
         () => {
-          // Frame scan error - ignore
+          // Bỏ qua lỗi nhận diện từng frame
         }
       );
 
-      if (isMountedRef.current) {
-        setIsCameraActive(true);
-        setCameraError(null);
-      } else {
+      if (!isMountedRef.current) {
         await safeStopScanner();
       }
     } catch (err: unknown) {
@@ -200,16 +197,16 @@ export default function QrScanner({ onScanSuccess, isProcessing }: QrScannerProp
   return (
     <div className="flex flex-col items-center w-full">
       {/* Vùng Scanner Viewport */}
-      <div className="relative w-full aspect-square max-w-[320px] bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-2xl flex flex-col items-center justify-center">
-        {/* DOM node cho Html5Qrcode */}
+      <div className="relative w-full aspect-square max-w-[320px] bg-slate-900 rounded-3xl overflow-hidden border-2 border-slate-800 shadow-2xl flex items-center justify-center">
+        {/* DOM node cho Html5Qrcode - LUÔN LUÔN CÓ KÍCH THƯỚC TRONG DOM */}
         <div
           id="qr-reader-container"
-          className={`w-full h-full object-cover ${!isCameraActive ? "hidden" : "block"}`}
+          className="w-full h-full object-cover [&_video]:w-full [&_video]:h-full [&_video]:object-cover [&_video]:rounded-3xl"
         />
 
-        {/* Trạng thái khi camera đang tắt */}
+        {/* Lớp overlay khi camera đang tắt */}
         {!isCameraActive && (
-          <div className="p-6 text-center text-slate-400 space-y-3">
+          <div className="absolute inset-0 bg-slate-900 z-10 flex flex-col items-center justify-center p-6 text-center text-slate-400 space-y-3">
             <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 text-indigo-400 flex items-center justify-center mx-auto">
               <Camera className="w-8 h-8 opacity-70" />
             </div>
@@ -224,7 +221,7 @@ export default function QrScanner({ onScanSuccess, isProcessing }: QrScannerProp
 
         {/* Khung ngắm & laser khi đang quét */}
         {isCameraActive && (
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+          <div className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
             <div className="relative w-56 h-56 border-2 border-transparent">
               {/* 4 Góc ngắm */}
               <div className="absolute top-0 left-0 w-7 h-7 border-t-4 border-l-4 border-emerald-400 rounded-tl-xl" />
@@ -249,13 +246,13 @@ export default function QrScanner({ onScanSuccess, isProcessing }: QrScannerProp
 
         {/* Thông báo lỗi nếu có */}
         {cameraError && (
-          <div className="absolute bottom-3 left-3 right-3 bg-red-950/90 border border-red-500/40 p-2.5 rounded-xl text-center text-[11px] text-red-200 backdrop-blur-sm">
+          <div className="absolute bottom-3 left-3 right-3 z-30 bg-red-950/90 border border-red-500/40 p-2.5 rounded-xl text-center text-[11px] text-red-200 backdrop-blur-sm">
             <p>{cameraError}</p>
           </div>
         )}
       </div>
 
-      {/* Thanh điều khiển chuyên nghiệp */}
+      {/* Thanh điều khiển */}
       <div className="flex flex-wrap items-center justify-center gap-2.5 mt-4">
         {/* Nút Bật/Tắt Camera */}
         <button

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import RegisterForm from "./RegisterForm";
 import { Calendar, MapPin, Users, Sparkles, Clock } from "lucide-react";
@@ -52,9 +53,18 @@ export default async function EventPage({ params }: EventPageProps) {
       <div className="max-w-3xl mx-auto">
         {/* Header Badge */}
         <div className="text-center mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20 backdrop-blur-sm">
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            Sự Kiện Nội Bộ Công Ty
+          <div className="inline-block bg-white p-2 rounded-xl mb-3 shadow-md">
+            <Image
+              src="/intergreat-logo.png"
+              alt="InterGreat Education Group"
+              width={120}
+              height={32}
+              className="h-6 w-auto object-contain"
+            />
+          </div>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#2cb696]/10 text-[#2cb696] border border-[#2cb696]/20 backdrop-blur-sm block w-fit mx-auto">
+            <Sparkles className="w-3.5 h-3.5" />
+            Sự Kiện InterGreat Education Group
           </span>
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight mt-3 text-white">
             {event.title}

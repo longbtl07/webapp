@@ -5,7 +5,7 @@ import { CheckinRequestBody, CheckinResponse } from "@/lib/types";
 export async function POST(req: Request) {
   try {
     const body: CheckinRequestBody = await req.json();
-    const { code, staffPin, operatorName } = body;
+    const { code, staffPin, operatorName, targetEventId } = body as CheckinRequestBody & { targetEventId?: string };
 
     // 1. Kiểm tra mã PIN nhân viên
     const expectedPin = process.env.STAFF_PIN || "8888";
@@ -55,7 +55,31 @@ export async function POST(req: Request) {
       );
     }
 
-    // 4. Kiểm tra xem vé đã check-in trước đó chưa
+    // 4. Nếu có chọn sự kiện cụ thể, kiểm tra vé có thuộc đúng sự kiện không
+    if (targetEventId && ticket.eventId !== targetEventId) {
+      return NextResponse.json<CheckinResponse>(
+        {
+          success: false,
+          message: `Sai sự kiện! Vé này dành cho "${ticket.event.title}".`,
+          codeStatus: "INVALID",
+          ticket: {
+            id: ticket.id,
+            ticketCode: ticket.ticketCode,
+            fullName: ticket.fullName,
+            email: ticket.email,
+            employeeId: ticket.employeeId,
+            department: ticket.department,
+            status: ticket.status,
+            checkedInAt: ticket.checkedInAt ? ticket.checkedInAt.toISOString() : null,
+            checkedInBy: ticket.checkedInBy,
+            eventTitle: ticket.event.title,
+          },
+        },
+        { status: 400 }
+      );
+    }
+
+    // 5. Kiểm tra xem vé đã check-in trước đó chưa
     if (ticket.status === "CHECKED_IN") {
       const timeStr = ticket.checkedInAt
         ? new Date(ticket.checkedInAt).toLocaleTimeString("vi-VN", {

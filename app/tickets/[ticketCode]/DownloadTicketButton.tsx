@@ -57,28 +57,28 @@ export default function DownloadTicketButton({
     // Vẽ vé ra thẻ Canvas để xuất ảnh PNG chất lượng cao
     const canvas = document.createElement("canvas");
     canvas.width = 600;
-    canvas.height = 800;
+    canvas.height = 820;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Nền gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, 800);
-    gradient.addColorStop(0, "#1e1b4b");
-    gradient.addColorStop(1, "#0f172a");
+    const gradient = ctx.createLinearGradient(0, 0, 0, 820);
+    gradient.addColorStop(0, "#0f172a");
+    gradient.addColorStop(1, "#020617");
     ctx.fillStyle = gradient;
-    ctx.roundRect(0, 0, 600, 800, 24);
+    ctx.roundRect(0, 0, 600, 820, 24);
     ctx.fill();
 
-    // Viền trắng mờ
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+    // Viền Teal
+    ctx.strokeStyle = "rgba(44, 182, 150, 0.4)";
     ctx.lineWidth = 2;
     ctx.stroke();
 
     // Tiêu đề
-    ctx.fillStyle = "#a5b4fc";
-    ctx.font = "bold 16px sans-serif";
+    ctx.fillStyle = "#2cb696";
+    ctx.font = "bold 15px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("VÉ THAM DỰ SỰ KIỆN NỘI BỘ", 300, 50);
+    ctx.fillText("INTERGREAT EDUCATION GROUP", 300, 48);
 
     // Tên sự kiện
     ctx.fillStyle = "#ffffff";
@@ -97,12 +97,12 @@ export default function DownloadTicketButton({
       ctx.drawImage(qrImage, 150, 130, 300, 300);
 
       // Mã vé
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#2cb696";
       ctx.font = "bold 26px monospace";
       ctx.fillText(ticketCode, 300, 480);
 
       // Đường kẻ đứt
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+      ctx.strokeStyle = "rgba(44, 182, 150, 0.3)";
       ctx.setLineDash([8, 8]);
       ctx.beginPath();
       ctx.moveTo(40, 520);
@@ -114,20 +114,20 @@ export default function DownloadTicketButton({
       ctx.textAlign = "left";
       ctx.fillStyle = "#94a3b8";
       ctx.font = "14px sans-serif";
-      ctx.fillText("Họ và tên:", 80, 560);
-      ctx.fillText("Phòng ban:", 80, 600);
+      ctx.fillText("Họ và tên:", 80, 565);
+      ctx.fillText("Phòng ban:", 80, 605);
 
       ctx.textAlign = "right";
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 16px sans-serif";
-      ctx.fillText(fullName, 520, 560);
-      ctx.fillText(department, 520, 600);
+      ctx.fillText(fullName, 520, 565);
+      ctx.fillText(department, 520, 605);
 
       // Chân vé
       ctx.textAlign = "center";
       ctx.fillStyle = "#64748b";
       ctx.font = "13px sans-serif";
-      ctx.fillText("Xuất trình mã QR này tại bàn tiếp đón để check-in", 300, 720);
+      ctx.fillText("Xuất trình mã QR này tại bàn tiếp đón InterGreat để check-in", 300, 725);
 
       // Tải ảnh về
       const dataUrl = canvas.toDataURL("image/png");
@@ -143,7 +143,7 @@ export default function DownloadTicketButton({
     <div className="flex flex-col sm:flex-row gap-3 mt-6">
       <button
         onClick={handleDownloadImage}
-        className="flex-1 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+        className="flex-1 py-3 px-4 rounded-xl bg-[#2cb696] hover:bg-[#23977c] active:scale-[0.98] text-white font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#2cb696]/20 transition-all cursor-pointer"
       >
         <Download className="w-4 h-4" />
         <span>Tải ảnh vé QR về máy</span>
@@ -151,12 +151,12 @@ export default function DownloadTicketButton({
 
       <button
         onClick={handleShareOrCopy}
-        className="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-[0.98] text-slate-200 font-medium text-sm flex items-center justify-center gap-2 border border-slate-700 transition-all cursor-pointer"
+        className="py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-slate-200 font-medium text-sm flex items-center justify-center gap-2 border border-slate-700 transition-all cursor-pointer"
       >
         {copied ? (
           <>
-            <Check className="w-4 h-4 text-emerald-400" />
-            <span className="text-emerald-400">Đã sao chép link!</span>
+            <Check className="w-4 h-4 text-[#2cb696]" />
+            <span className="text-[#2cb696]">Đã sao chép link!</span>
           </>
         ) : (
           <>

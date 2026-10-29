@@ -11,6 +11,8 @@ import {
   RotateCcw,
   UserCheck,
   Building,
+  Mail,
+  Loader2,
 } from "lucide-react";
 
 export interface AttendeeItem {
@@ -41,6 +43,29 @@ export default function AttendeeTable({
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | "CHECKED_IN" | "REGISTERED">("ALL");
   const [departmentFilter, setDepartmentFilter] = useState<string>("ALL");
+  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
+
+  const handleResendTicket = async (ticketId: string, email: string) => {
+    const pin = sessionStorage.getItem("event_admin_pin") || "123456";
+    setSendingEmailId(ticketId);
+    try {
+      const res = await fetch("/api/admin/tickets/resend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticketId, pin }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        alert(`Đã gửi lại vé thành công đến ${email}!`);
+      } else {
+        alert(data.message || "Gửi lại vé thất bại.");
+      }
+    } catch {
+      alert("Lỗi kết nối khi gửi lại vé.");
+    } finally {
+      setSendingEmailId(null);
+    }
+  };
 
   // Trích xuất danh sách phòng ban duy nhất
   const departments = useMemo(() => {
@@ -244,29 +269,45 @@ export default function AttendeeTable({
 
                     {/* Thao tác thủ công */}
                     <td className="py-3 px-4 text-right">
-                      {isCheckedIn ? (
+                      <div className="flex items-center justify-end gap-1.5">
                         <button
                           type="button"
-                          disabled={isUpdating}
-                          onClick={() => onToggleStatus(t.id, "REGISTERED")}
-                          className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-rose-300 text-[11px] transition-all inline-flex items-center gap-1 border border-slate-700 cursor-pointer disabled:opacity-50"
-                          title="Hủy trạng thái check-in"
+                          disabled={sendingEmailId === t.id}
+                          onClick={() => handleResendTicket(t.id, t.email)}
+                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-[#2cb696] transition-all border border-slate-700 cursor-pointer disabled:opacity-50"
+                          title={`Gửi lại vé qua email (${t.email})`}
                         >
-                          <RotateCcw className="w-3 h-3" />
-                          <span>Hoàn tác</span>
+                          {sendingEmailId === t.id ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <Mail className="w-3.5 h-3.5" />
+                          )}
                         </button>
-                      ) : (
-                        <button
-                          type="button"
-                          disabled={isUpdating}
-                          onClick={() => onToggleStatus(t.id, "CHECKED_IN")}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-medium transition-all inline-flex items-center gap-1 shadow-sm shadow-emerald-600/30 cursor-pointer disabled:opacity-50"
-                          title="Điểm danh thủ công"
-                        >
-                          <CheckCircle2 className="w-3 h-3" />
-                          <span>Điểm danh</span>
-                        </button>
-                      )}
+
+                        {isCheckedIn ? (
+                          <button
+                            type="button"
+                            disabled={isUpdating}
+                            onClick={() => onToggleStatus(t.id, "REGISTERED")}
+                            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-rose-300 text-[11px] transition-all inline-flex items-center gap-1 border border-slate-700 cursor-pointer disabled:opacity-50"
+                            title="Hủy trạng thái check-in"
+                          >
+                            <RotateCcw className="w-3 h-3" />
+                            <span>Hoàn tác</span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled={isUpdating}
+                            onClick={() => onToggleStatus(t.id, "CHECKED_IN")}
+                            className="px-2.5 py-1 rounded-lg bg-[#2cb696] hover:bg-[#23977c] text-white text-[11px] font-medium transition-all inline-flex items-center gap-1 shadow-sm shadow-[#2cb696]/20 cursor-pointer disabled:opacity-50"
+                            title="Điểm danh thủ công"
+                          >
+                            <CheckCircle2 className="w-3 h-3" />
+                            <span>Điểm danh</span>
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );

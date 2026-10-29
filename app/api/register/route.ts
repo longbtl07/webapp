@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { generateTicketCode } from "@/lib/qrcode";
+import { generateTicketCode, generateQrDataUrl } from "@/lib/qrcode";
+import { sendTicketEmail } from "@/lib/email";
 import { RegisterRequestBody } from "@/lib/types";
 
 export async function POST(req: Request) {
@@ -131,6 +132,39 @@ export async function POST(req: Request) {
         status: "REGISTERED",
       },
     });
+
+    // 8. Tự động gửi Email vé cho khách (chạy nền)
+    (async () => {
+      try {
+        const qrDataUrl = await generateQrDataUrl(newTicket.ticketCode);
+        const host = req.headers.get("host") || "localhost:3000";
+        const protocol = host.includes("localhost") ? "http" : "https";
+        const ticketUrl = `${protocol}://${host}/tickets/${newTicket.ticketCode}`;
+
+        const startDateStr = new Date(event.startDate).toLocaleString("vi-VN", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        await sendTicketEmail(newTicket.email, {
+          recipientName: newTicket.fullName,
+          ticketCode: newTicket.ticketCode,
+          eventTitle: event.title,
+          eventLocation: event.location,
+          startDateStr,
+          ticketUrl,
+          qrDataUrl,
+          department: newTicket.department,
+          employeeId: newTicket.employeeId,
+        });
+      } catch (err) {
+        console.error("Lỗi gửi email vé tự động:", err);
+      }
+    })();
 
     return NextResponse.json(
       {

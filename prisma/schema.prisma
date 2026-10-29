@@ -47,3 +47,9 @@ model Ticket {
   @@index([eventId])
   @@index([ticketCode])
 }
+
+model SystemSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

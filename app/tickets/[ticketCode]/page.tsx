@@ -70,20 +70,26 @@ export default async function TicketPage({ params, searchParams }: TicketPagePro
         )}
 
         {/* Thẻ vé Điện tử */}
-        <div className="bg-gradient-to-b from-slate-900 to-indigo-950/90 rounded-3xl border border-indigo-500/30 shadow-2xl overflow-hidden relative">
+        <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 rounded-3xl border border-[#2cb696]/30 shadow-2xl overflow-hidden relative">
           {/* Header vé */}
-          <div className="p-6 border-b border-indigo-500/20 bg-slate-900/60 backdrop-blur-sm">
-            <div className="flex items-center justify-between gap-2 mb-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-indigo-400">
-                Vé Khách Mời
-              </span>
+          <div className="p-6 border-b border-slate-800 bg-slate-900/90 backdrop-blur-sm">
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="bg-white p-1 rounded-lg">
+                <Image
+                  src="/intergreat-logo.png"
+                  alt="InterGreat Education Group"
+                  width={90}
+                  height={24}
+                  className="h-5 w-auto object-contain"
+                />
+              </div>
               {isCheckedIn ? (
                 <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   ĐÃ CHECK-IN
                 </span>
               ) : (
-                <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#2cb696]/20 text-[#2cb696] border border-[#2cb696]/30 flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5" />
                   CHƯA ĐIỂM DANH
                 </span>
@@ -104,18 +110,18 @@ export default async function TicketPage({ params, searchParams }: TicketPagePro
                 priority
               />
             </div>
-            <p className="font-mono font-bold text-lg text-indigo-200 tracking-wider mt-3">
+            <p className="font-mono font-bold text-lg text-[#2cb696] tracking-wider mt-3">
               {ticket.ticketCode}
             </p>
             <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
-              <QrCode className="w-3.5 h-3.5" /> Xuất trình mã này cho nhân viên đón khách
+              <QrCode className="w-3.5 h-3.5 text-[#2cb696]" /> Xuất trình mã này tại bàn tiếp đón InterGreat
             </p>
           </div>
 
           {/* Rãnh cắt vé (Ticket notch decoration) */}
           <div className="relative flex items-center justify-between px-[-12px]">
             <div className="w-6 h-6 rounded-full bg-slate-950 -ml-3" />
-            <div className="flex-1 border-t-2 border-dashed border-indigo-500/30 mx-2" />
+            <div className="flex-1 border-t-2 border-dashed border-[#2cb696]/30 mx-2" />
             <div className="w-6 h-6 rounded-full bg-slate-950 -mr-3" />
           </div>
 
