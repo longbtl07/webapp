@@ -17,14 +17,19 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const events = await prisma.event.findMany({
-    orderBy: { startDate: "asc" },
-    include: {
-      _count: {
-        select: { tickets: true },
+  let events: Array<any> = [];
+  try {
+    events = await prisma.event.findMany({
+      orderBy: { startDate: "asc" },
+      include: {
+        _count: {
+          select: { tickets: true },
+        },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.error("HomePage: Lỗi truy vấn sự kiện từ Prisma:", error);
+  }
 
   const activeEvents = events.filter((e) => e.isActive);
 

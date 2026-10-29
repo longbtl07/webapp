@@ -18,10 +18,15 @@ export default async function TicketPage({ params, searchParams }: TicketPagePro
   const { ticketCode } = await params;
   const { registered } = await searchParams;
 
-  const ticket = await prisma.ticket.findUnique({
-    where: { ticketCode },
-    include: { event: true },
-  });
+  let ticket: any = null;
+  try {
+    ticket = await prisma.ticket.findUnique({
+      where: { ticketCode },
+      include: { event: true },
+    });
+  } catch (error) {
+    console.error("TicketPage: Lỗi truy vấn vé từ Prisma:", error);
+  }
 
   if (!ticket) {
     notFound();

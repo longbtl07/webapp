@@ -5,14 +5,19 @@ import { Calendar, MapPin, Clock, Users, ArrowRight, Sparkles } from "lucide-rea
 export const dynamic = "force-dynamic";
 
 export default async function EventsListPage() {
-  const events = await prisma.event.findMany({
-    orderBy: { startDate: "asc" },
-    include: {
-      _count: {
-        select: { tickets: true },
+  let events: Array<any> = [];
+  try {
+    events = await prisma.event.findMany({
+      orderBy: { startDate: "asc" },
+      include: {
+        _count: {
+          select: { tickets: true },
+        },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.error("EventsListPage: Lỗi truy vấn sự kiện từ Prisma:", error);
+  }
 
   return (
     <div className="py-12 px-4 sm:px-6 max-w-5xl mx-auto space-y-8">

@@ -14,14 +14,19 @@ interface EventPageProps {
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
 
-  const event = await prisma.event.findUnique({
-    where: { slug },
-    include: {
-      _count: {
-        select: { tickets: true },
+  let event: any = null;
+  try {
+    event = await prisma.event.findUnique({
+      where: { slug },
+      include: {
+        _count: {
+          select: { tickets: true },
+        },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.error("EventPage: Lỗi truy vấn sự kiện từ Prisma:", error);
+  }
 
   if (!event) {
     notFound();
