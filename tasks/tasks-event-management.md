@@ -75,12 +75,12 @@ Update the file after completing each sub-task, not just after completing an ent
     - Không hợp lệ (Màu đỏ): cảnh báo mã vé không tồn tại.
   - [x] 3.6 Hiển thị danh sách 5 lượt check-in gần nhất trên màn hình máy quét để nhân viên tiếp đón dễ dàng đối soát.
 
-- [ ] 4.0 Real-time Statistics Dashboard & Attendee Management (GĐ1)
-  - [ ] 4.1 Xây dựng màn hình xác thực mã PIN cho Ban tổ chức truy cập trang quản trị (`app/admin/page.tsx`).
-  - [ ] 4.2 Xây dựng các thẻ thống kê tổng quan (Stats Cards): Tổng số đăng ký, Đã check-in, Chưa đến, Tỷ lệ tham dự (%).
-  - [ ] 4.3 Xây dựng bảng danh sách người tham gia (Attendee Table) hiển thị họ tên, email, phòng ban, trạng thái (Chưa đến / Đã check-in) và thời gian check-in.
-  - [ ] 4.4 Tích hợp thanh tìm kiếm nhanh (theo tên, mã vé, phòng ban) và bộ lọc theo trạng thái check-in.
-  - [ ] 4.5 Cài đặt cơ chế cập nhật dữ liệu tự động (auto-refresh/polling định kỳ) để dashboard hiển thị số liệu trực tiếp khi có người vừa check-in.
+- [x] 4.0 Real-time Statistics Dashboard & Attendee Management (GĐ1)
+  - [x] 4.1 Xây dựng màn hình xác thực mã PIN cho Ban tổ chức truy cập trang quản trị (`app/admin/page.tsx`).
+  - [x] 4.2 Xây dựng các thẻ thống kê tổng quan (Stats Cards): Tổng số đăng ký, Đã check-in, Chưa đến, Tỷ lệ tham dự (%).
+  - [x] 4.3 Xây dựng bảng danh sách người tham gia (Attendee Table) hiển thị họ tên, email, phòng ban, trạng thái (Chưa đến / Đã check-in) và thời gian check-in.
+  - [x] 4.4 Tích hợp thanh tìm kiếm nhanh (theo tên, mã vé, phòng ban) và bộ lọc theo trạng thái check-in.
+  - [x] 4.5 Cài đặt cơ chế cập nhật dữ liệu tự động (auto-refresh/polling định kỳ) để dashboard hiển thị số liệu trực tiếp khi có người vừa check-in.
 
 - [ ] 5.0 Multi-Event Management & Admin Portal (GĐ2)
   - [ ] 5.1 Xây dựng giao diện trang danh sách sự kiện và modal/form tạo sự kiện mới cho BTC (`app/admin/events/page.tsx`).
