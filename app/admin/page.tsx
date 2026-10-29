@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import StatsCards from "./StatsCards";
 import AttendeeTable, { AttendeeItem } from "./AttendeeTable";
+import QuickCreateEventButton from "@/components/QuickCreateEventButton";
 import {
   Lock,
   BarChart3,
@@ -219,6 +220,17 @@ export default function AdminDashboardPage() {
               {isLoading ? "Đang xác thực..." : "Truy Cập Dashboard"}
             </button>
 
+            <div className="pt-3 border-t border-slate-800/80 text-center space-y-2">
+              <p className="text-[11px] text-slate-400">Chưa có sự kiện nào trong hệ thống?</p>
+              <QuickCreateEventButton
+                variant="subtle"
+                label="Tự Động Tạo Sự Kiện Mới & Khởi Tạo DB"
+                onSuccess={() => {
+                  fetchDashboardData(pin.trim() || "123456", selectedSlug);
+                }}
+              />
+            </div>
+
             <div className="text-center pt-2">
               <Link href="/" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
                 ← Quay lại trang chủ
@@ -296,6 +308,13 @@ export default function AdminDashboardPage() {
             >
               <span>+ Mời Khách & Cấp Vé</span>
             </Link>
+
+            {/* Tạo nhanh sự kiện mới */}
+            <QuickCreateEventButton
+              variant="secondary"
+              label="+ Tự Tạo Sự Kiện Mới"
+              onSuccess={() => fetchDashboardData(pin, selectedSlug)}
+            />
 
             {/* Cài đặt Email */}
             <Link

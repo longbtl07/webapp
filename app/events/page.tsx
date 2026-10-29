@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import QuickCreateEventButton from "@/components/QuickCreateEventButton";
 import { Calendar, MapPin, Clock, Users, ArrowRight, Sparkles } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -36,7 +37,21 @@ export default async function EventsListPage() {
 
       {/* Grid danh sách sự kiện */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {events.map((evt) => {
+        {events.length === 0 ? (
+          <div className="col-span-full bg-slate-900/80 border border-slate-800 rounded-3xl p-10 text-center space-y-4 shadow-xl">
+            <div className="w-14 h-14 rounded-2xl bg-[#2cb696]/10 text-[#2cb696] flex items-center justify-center mx-auto">
+              <Calendar className="w-7 h-7" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-white">Chưa có sự kiện nào đang diễn ra</h3>
+              <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+                Hiện tại chưa có sự kiện nào được tạo hoặc đang khởi tạo lại cơ sở dữ liệu. Bấm nút dưới để tạo nhanh sự kiện mới.
+              </p>
+            </div>
+            <QuickCreateEventButton />
+          </div>
+        ) : (
+          events.map((evt) => {
           const startDateStr = new Date(evt.startDate).toLocaleDateString("vi-VN", {
             weekday: "long",
             day: "numeric",
@@ -108,7 +123,7 @@ export default async function EventsListPage() {
               </div>
             </div>
           );
-        })}
+        }))}
       </div>
     </div>
   );

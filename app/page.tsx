@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import QuickCreateEventButton from "@/components/QuickCreateEventButton";
 import {
   QrCode,
   ScanLine,
@@ -165,7 +166,21 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {events.map((evt) => {
+            {events.length === 0 ? (
+              <div className="col-span-full bg-slate-900/60 border border-slate-800 rounded-3xl p-8 text-center space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-[#2cb696]/10 text-[#2cb696] flex items-center justify-center mx-auto">
+                  <Calendar className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Chưa có sự kiện nào trong hệ thống</h3>
+                  <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+                    Bấm nút bên dưới để hệ thống tự động khởi tạo sự kiện mẫu và vé VIP cho InterGreat Education Group.
+                  </p>
+                </div>
+                <QuickCreateEventButton />
+              </div>
+            ) : (
+              events.map((evt) => {
               const startDateStr = new Date(evt.startDate).toLocaleDateString("vi-VN", {
                 weekday: "short",
                 day: "numeric",
@@ -228,7 +243,7 @@ export default async function HomePage() {
                   </div>
                 </div>
               );
-            })}
+            }))}
           </div>
         </div>
       </div>
