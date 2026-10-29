@@ -1,28 +1,28 @@
-import { PrismaClient } from "@prisma/client";
-import fs from "fs";
 import path from "path";
 
-function setupDatabaseUrl(): string {
-  // 1. Ưu tiên cơ sở dữ liệu ngoài (PostgreSQL, Supabase, Turso...) nếu có
-  const envUrl = process.env.DATABASE_URL;
-  if (envUrl && !envUrl.startsWith("file:")) {
-    return envUrl;
+// Đảm bảo DATABASE_URL luôn có tiền tố "file:" hợp lệ cho SQLite trước khi nạp Prisma Client
+function getEnforcedDatabaseUrl(): string {
+  const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NODE_ENV === "production");
+
+  if (isServerless) {
+    const tmpUrl = "file:/tmp/dev.db";
+    process.env.DATABASE_URL = tmpUrl;
+    return tmpUrl;
   }
 
-  // 2. Trên Vercel Serverless, hệ thống file gốc là READ-ONLY.
-  // SQLite bắt buộc phải đặt tại thư mục /tmp
-  if (process.env.VERCEL) {
-    const tmpDbPath = path.join("/tmp", "dev.db");
-    return `file:${tmpDbPath}`;
+  // Local development
+  let envUrl = (process.env.DATABASE_URL || "").trim();
+  if (!envUrl.startsWith("file:")) {
+    const localDbPath = path.join(process.cwd(), "prisma", "dev.db");
+    envUrl = `file:${localDbPath}`;
   }
-
-  // 3. Local dev
-  const localDb = path.join(process.cwd(), "prisma", "dev.db");
-  return `file:${localDb}`;
+  process.env.DATABASE_URL = envUrl;
+  return envUrl;
 }
 
-const resolvedDbUrl = setupDatabaseUrl();
-process.env.DATABASE_URL = resolvedDbUrl;
+const resolvedDbUrl = getEnforcedDatabaseUrl();
+
+import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -48,9 +48,12 @@ export async function ensureDatabaseReady(): Promise<void> {
   if (globalForPrisma.dbInitialized) return;
   if (initPromise) return initPromise;
 
+  // Luôn đảm bảo DATABASE_URL đúng trước khi chạy query
+  process.env.DATABASE_URL = resolvedDbUrl;
+
   initPromise = (async () => {
     try {
-      // 1. Tạo bảng nếu chưa có (Dành cho cả SQLite trong /tmp trên Vercel)
+      // 1. DDL tự động tạo cấu trúc bảng SQLite
       const ddlStatements = [
         `CREATE TABLE IF NOT EXISTS "Event" (
           "id" TEXT NOT NULL PRIMARY KEY,
@@ -98,7 +101,7 @@ export async function ensureDatabaseReady(): Promise<void> {
         await basePrisma.$executeRawUnsafe(sql);
       }
 
-      // 2. Kiểm tra nếu chưa có sự kiện nào thì tự động tạo sự kiện mẫu và vé mẫu
+      // 2. Kiểm tra nếu chưa có sự kiện nào thì tạo sự kiện khởi đầu
       const eventCount = await basePrisma.event.count();
       if (eventCount === 0) {
         console.log("[Prisma] Khởi tạo dữ liệu sự kiện mẫu cho InterGreat Education Group...");
@@ -143,7 +146,6 @@ export async function ensureDatabaseReady(): Promise<void> {
           ],
         });
 
-        // Cài đặt email mặc định
         await basePrisma.systemSetting.upsert({
           where: { key: "EMAIL_SETTINGS" },
           update: {},
@@ -182,6 +184,8 @@ export const prisma = new Proxy(basePrisma, {
           const fn = Reflect.get(mTarget, mProp, mReceiver);
           if (typeof fn === "function") {
             return async (...args: any[]) => {
+              // Luôn bảo đảm biến môi trường chuẩn xác trước mỗi truy vấn
+              process.env.DATABASE_URL = resolvedDbUrl;
               await ensureDatabaseReady();
               return fn.apply(mTarget, args);
             };

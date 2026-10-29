@@ -1,4 +1,9 @@
 import { NextResponse } from "next/server";
+
+if (!process.env.DATABASE_URL || !process.env.DATABASE_URL.startsWith("file:")) {
+  process.env.DATABASE_URL = process.env.VERCEL ? "file:/tmp/dev.db" : "file:./prisma/dev.db";
+}
+
 import { prisma, ensureDatabaseReady } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
