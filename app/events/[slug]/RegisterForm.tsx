@@ -67,6 +67,21 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setErrorMessage("Địa chỉ email không hợp lệ (ví dụ: ten@company.com).");
+      setIsLoading(false);
+      return;
+    }
+
+    const cleanPhone = formData.phoneNumber.trim().replace(/\s+/g, "");
+    const phoneRegex = /^(0|\+84)[3|5|7|8|9][0-9]{8}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      setErrorMessage("Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại di động 10 số (ví dụ: 0912345678).");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -167,12 +182,14 @@ export default function RegisterForm({ eventSlug }: RegisterFormProps) {
             <Phone className="absolute left-3.5 top-3 w-5 h-5 text-slate-400" />
             <input
               type="tel"
+              inputMode="numeric"
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
               placeholder="0912345678"
+              maxLength={12}
               required
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm"
+              className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-400 text-sm shadow-sm font-mono"
             />
           </div>
         </div>

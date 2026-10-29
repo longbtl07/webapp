@@ -23,11 +23,23 @@ export async function POST(req: Request) {
     const cleanName = fullName.trim();
     const cleanDept = department.trim();
 
-    // Kiểm tra định dạng email cơ bản
+    // Kiểm tra định dạng email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(cleanEmail)) {
       return NextResponse.json(
-        { success: false, message: "Địa chỉ email không hợp lệ." },
+        { success: false, message: "Địa chỉ email không hợp lệ (ví dụ: ten@company.com)." },
+        { status: 400 }
+      );
+    }
+
+    // Kiểm tra định dạng số điện thoại Việt Nam (10 chữ số)
+    const phoneRegex = /^(0|\+84)[3|5|7|8|9][0-9]{8}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại di động gồm 10 chữ số (ví dụ: 0912345678).",
+        },
         { status: 400 }
       );
     }

@@ -8,13 +8,25 @@ import ScanFeedbackModal from "./ScanFeedbackModal";
 import RecentScans, { RecentScanItem } from "./RecentScans";
 import { playSuccessSound, playAlertSound } from "@/lib/audio";
 import { CheckinResponse } from "@/lib/types";
-import { ShieldCheck, LogOut, ScanLine, ArrowLeft, UserCircle2, Sparkles, Lock } from "lucide-react";
+import {
+  ShieldCheck,
+  LogOut,
+  ScanLine,
+  ArrowLeft,
+  UserCircle2,
+  Lock,
+  Keyboard,
+  Camera,
+} from "lucide-react";
 
 export default function CheckinPage() {
   const [pin, setPin] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pinError, setPinError] = useState<string | null>(null);
-  const [operatorName, setOperatorName] = useState("Nhân viên tiếp đón");
+  const [operatorName, setOperatorName] = useState("Lễ tân đón khách");
+
+  // Tab chuyển đổi: "CAMERA" hoặc "MANUAL"
+  const [activeTab, setActiveTab] = useState<"CAMERA" | "MANUAL">("CAMERA");
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [scanResult, setScanResult] = useState<CheckinResponse | null>(null);
@@ -38,7 +50,6 @@ export default function CheckinPage() {
     e.preventDefault();
     if (!pin.trim()) return;
 
-    // Test thử với một mã rỗng để kiểm tra PIN từ backend
     try {
       const res = await fetch("/api/checkin", {
         method: "POST",
@@ -48,11 +59,10 @@ export default function CheckinPage() {
 
       const data: CheckinResponse = await res.json();
       if (data.codeStatus === "UNAUTHORIZED") {
-        setPinError("Mã PIN không đúng. Vui lòng thử lại!");
+        setPinError("Mã PIN đón tiếp không chính xác. Vui lòng thử lại!");
         return;
       }
 
-      // PIN hợp lệ
       sessionStorage.setItem("event_staff_pin", pin.trim());
       sessionStorage.setItem("event_staff_operator", operatorName.trim());
       setIsAuthenticated(true);
@@ -145,7 +155,7 @@ export default function CheckinPage() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">
-                Tên nhân viên / Cổng trực
+                Tên nhân viên / Vị trí trực
               </label>
               <div className="relative">
                 <UserCircle2 className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
@@ -201,7 +211,7 @@ export default function CheckinPage() {
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors p-1"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Trang chủ</span>
@@ -225,23 +235,64 @@ export default function CheckinPage() {
         <div className="text-center">
           <h1 className="text-lg sm:text-xl font-extrabold text-white flex items-center justify-center gap-2">
             <ScanLine className="w-5 h-5 text-emerald-400" />
-            Máy Quét Check-in Sự Kiện
+            Cổng Tiếp Đón & Check-in
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            Hướng camera vào mã QR của khách hoặc nhập mã vé bên dưới
+            Chọn phương thức quét QR hoặc nhập mã vé để đối soát
           </p>
         </div>
 
-        {/* Camera QR Scanner */}
-        <QrScanner onScanSuccess={handleProcessCode} isProcessing={isProcessing} />
-
-        {/* Nhập mã bằng tay (Fallback) */}
-        <div className="pt-2">
-          <p className="text-[11px] font-medium text-slate-400 mb-1.5 flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> Nhập mã vé thủ công (khi camera lỗi/mờ):
-          </p>
-          <ManualCodeInput onSubmit={handleProcessCode} isProcessing={isProcessing} />
+        {/* Tab chuyển đổi chế độ */}
+        <div className="flex p-1 bg-slate-900 rounded-2xl border border-slate-800">
+          <button
+            type="button"
+            onClick={() => setActiveTab("CAMERA")}
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              activeTab === "CAMERA"
+                ? "bg-slate-800 text-emerald-400 shadow-sm"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <Camera className="w-4 h-4" />
+            <span>Quét Mã QR</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("MANUAL")}
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+              activeTab === "MANUAL"
+                ? "bg-slate-800 text-indigo-400 shadow-sm"
+                : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <Keyboard className="w-4 h-4" />
+            <span>Nhập Mã Thủ Công</span>
+          </button>
         </div>
+
+        {/* Nội dung Tab */}
+        {activeTab === "CAMERA" ? (
+          <div className="bg-slate-900/60 p-4 rounded-3xl border border-slate-800/80 space-y-4">
+            <QrScanner onScanSuccess={handleProcessCode} isProcessing={isProcessing} />
+            <div className="pt-2 border-t border-slate-800/60">
+              <p className="text-[11px] text-slate-400 mb-2 font-medium">Hoặc nhập nhanh mã vé tại đây:</p>
+              <ManualCodeInput onSubmit={handleProcessCode} isProcessing={isProcessing} />
+            </div>
+          </div>
+        ) : (
+          <div className="bg-slate-900/60 p-6 rounded-3xl border border-slate-800/80 space-y-4">
+            <div className="text-center">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto mb-2">
+                <Keyboard className="w-6 h-6" />
+              </div>
+              <h2 className="text-sm font-bold text-white">Chế độ Nhập Mã Vé / Súng Bắn Barcode</h2>
+              <p className="text-xs text-slate-400 mt-1">
+                Gõ mã vé hoặc dùng máy quét mã vạch cắm cổng USB rồi nhấn Enter.
+              </p>
+            </div>
+            <ManualCodeInput onSubmit={handleProcessCode} isProcessing={isProcessing} />
+          </div>
+        )}
 
         {/* Danh sách 5 lượt check-in gần nhất */}
         <RecentScans scans={recentScans} />

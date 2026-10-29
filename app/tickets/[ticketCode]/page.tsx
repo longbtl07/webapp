@@ -42,8 +42,8 @@ export default async function TicketPage({ params, searchParams }: TicketPagePro
   const isCheckedIn = ticket.status === "CHECKED_IN";
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-8 px-4 sm:px-6 flex flex-col justify-center items-center">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 flex flex-col justify-start sm:justify-center items-center">
+      <div className="w-full max-w-md my-auto">
         {/* Nút quay lại sự kiện */}
         <div className="mb-4 flex items-center justify-between">
           <Link
