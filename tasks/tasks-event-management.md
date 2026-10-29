@@ -64,16 +64,16 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 2.5 Xây dựng trang hiển thị vé điện tử (`app/tickets/[ticketCode]/page.tsx`): hiển thị thông tin sự kiện, thông tin khách mời và mã QR độ tương phản cao.
   - [x] 2.6 Tích hợp tính năng "Tải ảnh vé QR" về điện thoại để khách xuất trình offline tại sự kiện.
 
-- [ ] 3.0 Web-based Check-in Scanner Module (GĐ1)
-  - [ ] 3.1 Xây dựng màn hình xác thực mã PIN truy cập cho nhân viên đón khách (`app/checkin/page.tsx`).
-  - [ ] 3.2 Tích hợp thư viện quét mã QR qua camera trình duyệt (`html5-qrcode`) hỗ trợ chuyển đổi camera trước/sau trên điện thoại di động.
-  - [ ] 3.3 Xây dựng form nhập tay mã vé dự phòng (Manual Ticket Code Input) đặt song song với camera.
-  - [ ] 3.4 Xây dựng API Route xác thực check-in (`POST /api/checkin`): kiểm tra tính hợp lệ, trạng thái vé, chống điểm danh trùng lặp và ghi nhận thời gian `checkedInAt`.
-  - [ ] 3.5 Xây dựng thông báo phản hồi trực quan trên màn hình quét:
+- [x] 3.0 Web-based Check-in Scanner Module (GĐ1)
+  - [x] 3.1 Xây dựng màn hình xác thực mã PIN truy cập cho nhân viên đón khách (`app/checkin/page.tsx`).
+  - [x] 3.2 Tích hợp thư viện quét mã QR qua camera trình duyệt (`html5-qrcode`) hỗ trợ chuyển đổi camera trước/sau trên điện thoại di động.
+  - [x] 3.3 Xây dựng form nhập tay mã vé dự phòng (Manual Ticket Code Input) đặt song song với camera.
+  - [x] 3.4 Xây dựng API Route xác thực check-in (`POST /api/checkin`): kiểm tra tính hợp lệ, trạng thái vé, chống điểm danh trùng lặp và ghi nhận thời gian `checkedInAt`.
+  - [x] 3.5 Xây dựng thông báo phản hồi trực quan trên màn hình quét:
     - Thành công (Màu xanh lá): hiển thị tên khách mời, phòng ban và âm thanh chuông báo nhận diện.
     - Đã check-in trước đó (Màu vàng/đỏ): cảnh báo rõ ràng thời gian đã check-in trước đó.
     - Không hợp lệ (Màu đỏ): cảnh báo mã vé không tồn tại.
-  - [ ] 3.6 Hiển thị danh sách 5 lượt check-in gần nhất trên màn hình máy quét để nhân viên tiếp đón dễ dàng đối soát.
+  - [x] 3.6 Hiển thị danh sách 5 lượt check-in gần nhất trên màn hình máy quét để nhân viên tiếp đón dễ dàng đối soát.
 
 - [ ] 4.0 Real-time Statistics Dashboard & Attendee Management (GĐ1)
   - [ ] 4.1 Xây dựng màn hình xác thực mã PIN cho Ban tổ chức truy cập trang quản trị (`app/admin/page.tsx`).
